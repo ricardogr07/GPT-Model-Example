@@ -8,13 +8,13 @@ OPENAI_API_BASE = os.environ.get('OPENAI_API_BASE')
 
 openai.api_type = "azure"
 openai.api_key = OPENAI_API_KEY
-openai.api_base = OPENAI_API_BASE
-openai.api_version = "2022-12-01"
+openai.api_base = OPENAI_API_BASE 
+openai.api_version = "2023-03-15-preview"
 
 userPrompt="Write a Python Function to add 2 numbers"
 
 response = openai.Completion.create(
-  engine="SampleDeployment",
+  engine="gpt-35-turbo",
   prompt=userPrompt,
   temperature=0,
   max_tokens=50,

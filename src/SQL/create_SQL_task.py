@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 import argparse
-from openai_sql_creation import SQLCodeCreation
-from openai_explain_code import CodeExplain
+from handlers.openai_sql_creation import SQLCodeCreation
+from handlers.openai_explain_code import CodeExplain
 
 class TaskCreator:
     def __init__(self, specifications):

@@ -2,8 +2,8 @@ import os
 from datetime import datetime
 import random
 import re
-from openai_explain_code import CodeExplain
-from openai_handler import OpenAIApiHandler
+from handlers.openai_explain_code import CodeExplain
+from handlers.openai_handler import OpenAIApiHandler
 
 class SQLCodeCreation(OpenAIApiHandler):
     def __init__(self, additionalComments: str):

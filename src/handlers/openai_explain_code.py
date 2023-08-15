@@ -1,7 +1,4 @@
-import openai
-import tkinter as tk
-from tkinter import simpledialog
-from openai_handler import OpenAIApiHandler
+from handlers.openai_handler import OpenAIApiHandler
 
 class CodeExplain(OpenAIApiHandler):
     def __init__(self):

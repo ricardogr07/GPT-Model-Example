@@ -1,0 +1,162 @@
+Tables:
+Sure, here's an example with 5 tables:
+
+# Orders(order_id, customer_id, order_date, total_amount)
+# Customers(customer_id, customer_name, city, state)
+# OrderDetails(order_id, product_id, quantity, price)
+# Products(product_id, product_name, category_id, supplier_id)
+# Categories(category_id, category_name)
+
+Prompt 1:
+I'm sorry, but the tables you provided are not related to the question you asked. However, I can still help you with your question. Here's a query to find the last order date for each customer:
+
+```
+SELECT customer_id, MAX(order_date) AS last_order_date
+FROM Orders
+GROUP BY customer_id;
+```
+
+This query selects the customer_id and the maximum order_date for each customer from the Orders table, and groups the results by customer_id. The MAX function is used to find the latest order date for each customer.
+
+Answer 1:
+Here is a SQL query that retrieves the last order date for each customer:
+
+```
+-- Create a temporary table with the last order date for each customer
+WITH LastOrderDates AS (
+    SELECT customer_id, 
+           LAST_VALUE(order_date) OVER(PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_order_date
+    FROM orders
+)
+-- Join the temporary table with the customers table to get the customer name
+SELECT c.customer_name, l.last_order_date
+FROM customers c
+JOIN LastOrderDates l ON c.customer_id = l.customer_id;
+```
+
+Step by step explanation:
+1. The query creates a temporary table called `LastOrderDates` using a common table expression (CTE).
+2. The `LAST_VALUE` function is used to get the last order date for each customer. The `PARTITION BY` clause groups the orders by customer_id, and the `ORDER BY` clause sorts the orders by order_date. The `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` clause specifies that the window for the `LAST_VALUE` function includes all rows in the partition.
+3. The `LastOrderDates` table is joined with the `customers` table on the `customer_id` column to get the customer name.
+4. The final result set includes the customer name and their last order date.
+
+Summary: This SQL query retrieves the last order date for each customer by creating a temporary table with the last order date for each customer and joining it with the customers table.
+
+Prompt 2:
+Calculate the total amount spent by each customer on their last order
+
+Answer 2:
+Here is a SQL query that retrieves the total amount spent by each customer on their last order:
+
+```
+-- Create a temporary table with the total amount spent by each customer on their last order
+WITH LastOrderDetails AS (
+    SELECT o.customer_id, od.quantity * od.price AS total_amount
+    FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    WHERE o.order_date = (SELECT MAX(order_date) FROM orders)
+)
+-- Join the temporary table with the customers table to retrieve the customer name
+SELECT c.customer_name, l.total_amount
+FROM customers c
+JOIN LastOrderDetails l ON c.customer_id = l.customer_id;
+```
+
+Step by step explanation:
+1. The query creates a temporary table called `LastOrderDetails` using a common table expression (CTE).
+2. The CTE selects the `customer_id` and the total amount spent on the last order for each customer.
+3. The total amount is calculated by multiplying the quantity of each product in the order by its price.
+4. The CTE uses a subquery to find the maximum order date in the `orders` table, which corresponds to the last order for any customer.
+5. The `WHERE` clause filters the orders and order details to only include the last order for each customer.
+6. The main query joins the `LastOrderDetails` table with the `customers` table on the `customer_id` column.
+7. The query selects the `customer_name` and `total_amount` columns from the joined table.
+
+Summary: This SQL query retrieves the total amount spent by each customer on their last order by creating a temporary table with the total amount spent on the last order for each customer and joining it with the `customers` table to retrieve the customer name.
+
+Prompt 3:
+Find the last order date for each product category
+
+Answer 3:
+Here is a SQL query that retrieves the last order date for each category:
+
+```SQL
+-- Create a temporary table with the last order date for each category
+WITH LastOrderDates AS (
+    SELECT category_id, 
+           LAST_VALUE(order_date) OVER(PARTITION BY category_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_order_date
+    FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN products p ON od.product_id = p.product_id
+)
+-- Join the temporary table with the categories table to get the category name
+SELECT c.category_name, l.last_order_date
+FROM categories c
+JOIN LastOrderDates l ON c.category_id = l.category_id;
+```
+
+Step by step explanation:
+1. The query creates a temporary table called `LastOrderDates` using a common table expression (CTE).
+2. The CTE selects the `category_id` and the last order date for each category using the `LAST_VALUE` window function. The `PARTITION BY` clause partitions the data by `category_id`, and the `ORDER BY` clause orders the data by `order_date`. The `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` clause specifies the window frame to include all rows in the partition.
+3. The CTE joins the `orders`, `order_details`, and `products` tables to get the `order_date` for each product.
+4. The main query joins the `LastOrderDates` table with the `categories` table on the `category_id` column to get the category name.
+5. The main query selects the `category_name` and `last_order_date` columns.
+
+Summary: This SQL query retrieves the last order date for each category by creating a temporary table with the last order date for each product and then joining it with the categories table to get the category name.
+
+Prompt 4:
+Calculate the total quantity of each product sold on the last order
+
+Answer 4:
+Here is a SQL query that retrieves the total quantity of each product in the last order:
+
+```
+WITH LastOrderDetails AS (
+    -- This subquery retrieves the total quantity of each product in the last order
+    SELECT od.product_id, SUM(od.quantity) OVER(PARTITION BY od.product_id) AS total_quantity
+    FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    WHERE o.order_date = (SELECT MAX(order_date) FROM orders)
+)
+-- This query joins the subquery with the products table to retrieve the product names
+SELECT p.product_name, l.total_quantity
+FROM products p
+JOIN LastOrderDetails l ON p.product_id = l.product_id;
+```
+
+Step by step explanation:
+1. The subquery `LastOrderDetails` retrieves the total quantity of each product in the last order. It does this by joining the `orders` and `order_details` tables and using the `SUM` window function to calculate the total quantity for each product.
+2. The `WHERE` clause in the subquery filters the orders to only include the last order, which is determined by finding the maximum order date in the `orders` table.
+3. The main query joins the `LastOrderDetails` subquery with the `products` table on the `product_id` column to retrieve the product names.
+4. The result set includes the product name and the total quantity of that product in the last order.
+
+Summary: This SQL query retrieves the product names and total quantities of each product in the last order.
+
+Prompt 5:
+Find the last order date for each supplier
+
+Answer 5:
+Here is a SQL query that retrieves the last order date for each supplier:
+
+```SQL
+-- Create a temporary table with the last order date for each supplier
+WITH LastOrderDates AS (
+    SELECT supplier_id, 
+           LAST_VALUE(order_date) OVER(PARTITION BY supplier_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_order_date
+    FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN products p ON od.product_id = p.product_id
+)
+-- Join the temporary table with the suppliers table to get the supplier name
+SELECT s.supplier_name, l.last_order_date
+FROM suppliers s
+JOIN LastOrderDates l ON s.supplier_id = l.supplier_id;
+```
+
+Step by step explanation:
+1. The query creates a temporary table called `LastOrderDates` using a common table expression (CTE).
+2. The CTE selects the `supplier_id` and the last order date for each supplier using the `LAST_VALUE` window function. The `PARTITION BY` clause partitions the data by `supplier_id`, and the `ORDER BY` clause orders the data by `order_date`. The `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` clause specifies the window frame to include all rows in the partition.
+3. The CTE joins the `orders`, `order_details`, and `products` tables to get the `order_date` for each product ordered by each supplier.
+4. The main query joins the `LastOrderDates` table with the `suppliers` table on `supplier_id` to get the `supplier_name`.
+5. The main query selects the `supplier_name` and `last_order_date` columns.
+
+Summary: This SQL query retrieves the last order date for each supplier by creating a temporary table with the last order date for each product ordered by each supplier, and then joining that table with the `suppliers` table to get the supplier name.

@@ -1,3 +1,4 @@
+import logging
 import os
 import openai
 from dotenv import load_dotenv
@@ -37,4 +38,5 @@ class OpenAIApiHandler:
             )
             return response['choices'][0]['message']['content']
         except openai.error.OpenAIError as e:
-            return (f"Error during API call: {e}")
+            logging.error(f"Error during API call: {e}")
+            raise

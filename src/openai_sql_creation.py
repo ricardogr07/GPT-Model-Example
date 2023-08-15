@@ -1,12 +1,54 @@
-import openai
+import os
+from datetime import datetime
+import random
+import re
+from openai_explain_code import CodeExplain
 from openai_handler import OpenAIApiHandler
 
 class SQLCodeCreation(OpenAIApiHandler):
-    def __init__(self):
+    def __init__(self, additionalComments: str):
         super().__init__()
+        self.additionalComments = additionalComments
 
-    def request_new_example(self):
+    def extract_query_components(self,input_text: str):
+        # Regular expression pattern to match the query description
+        query_desc_pattern = re.compile(r'\d+\.\s*\*\*Query:\s*(.*?)\s*\*\*', re.MULTILINE)
+        
+        # Regular expression pattern to match the SQL markdown code
+        sql_code_pattern = re.compile(r'```sql(.*?)```', re.MULTILINE | re.DOTALL)
+        
+        # Find the query description match
+        query_desc_match = query_desc_pattern.search(input_text)
+        query_desc = query_desc_match.group(1).strip() if query_desc_match else None
+        
+        # Find the SQL markdown code match
+        sql_code_match = sql_code_pattern.search(input_text)
+        sql_code = sql_code_match.group(1).strip() if sql_code_match else None
+        
+        return query_desc, f'```sql\n{sql_code}\n```'
+
+    def split_input_into_sections(self,text: str):
+        # Regular expression pattern to match each query section
+        query_pattern = re.compile(r'\d+\.\s*\*\*Query:[\s\S]*?(?=^\d+\.\s*\*\*Query:|\Z)', re.MULTILINE)
+        
+        # Find all matches for the pattern in the input text
+        queries = query_pattern.findall(text)
+        
+        # Get the first section which contains the tables by splitting the input text at the first query
+        tables_section = text.split(queries[0])[0].strip()
+        
+        # Cleanup the queries by stripping unnecessary leading/trailing whitespaces
+        cleaned_queries = [query.strip() for query in queries]
+        
+        return tables_section, cleaned_queries[0], cleaned_queries[1], cleaned_queries[2], cleaned_queries[3], cleaned_queries[4]
+
+    def request_new_example(self) -> str:
         """Request code example for sql using OpenAI API."""
+        numberTables = random.randint(3,5)
+        prompt = f"Create a new example with a different topic, use {numberTables} tables now. Create 5 queries based on these tables. Make sure to add CTEs into each query example. "
+        if self.additionalComments:
+            prompt += "Also, I need you to consider adding " + self.additionalComments + " to each query example."
+        print(prompt)
         messages = [
             {
                 "role":"system",
@@ -18,29 +60,33 @@ class SQLCodeCreation(OpenAIApiHandler):
             },
             {
                 "role":"assistant",
-                "content":"**Table: books**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| book_id      | Book's ID                   |\n| title        | Book's title                |\n| author_id    | ID of the author            |\n| genre        | Book's genre                |\n| price        | Book's price                |\n\n**Table: authors**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| author_id    | Author's ID                 |\n| author_name  | Author's name               |\n| country      | Author's country            |\n\n**Table: customers**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| customer_id  | Customer's ID               |\n| customer_name | Customer's name            |\n| city         | Customer's city             |\n| state        | Customer's state            |\n\n**Table: book_reviews**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| review_id    | Review's ID                 |\n| book_id      | ID of the book being reviewed |\n| customer_id  | ID of the customer who reviewed |\n| rating       | Rating given by the customer |\n| review_text  | Text of the review          |\n\n\n1. **Query: Calculate the cumulative distribution of customer ratings for books**\n```sql\nWITH BookRatings AS (\n    SELECT b.title, br.rating\n    FROM books b\n    JOIN book_reviews br ON b.book_id = br.book_id\n)\nSELECT title, rating, CUME_DIST() OVER(ORDER BY rating DESC) AS cume_dist\nFROM BookRatings;\n```\n\n2. **Query: Identify books with a cumulative distribution rating below 0.4**\n```sql\nWITH BookRatings AS (\n    SELECT b.title, br.rating\n    FROM books b\n    JOIN book_reviews br ON b.book_id = br.book_id\n)\nSELECT title, rating\nFROM BookRatings\nWHERE CUME_DIST() OVER(ORDER BY rating DESC) < 0.4;\n```\n\n3. **Query: Calculate the CUME_DIST of average ratings for books within each genre**\n```sql\nWITH GenreAvgRatings AS (\n    SELECT b.genre, AVG(br.rating) AS avg_rating\n    FROM books b\n    JOIN book_reviews br ON b.book_id = br.book_id\n    GROUP BY b.genre\n)\nSELECT genre, avg_rating, CUME_DIST() OVER(ORDER BY avg_rating DESC) AS cume_dist\nFROM GenreAvgRatings;\n```\n\n4. **Query: Find the genres with a CUME_DIST above 0.6 in terms of average ratings**\n```sql\nWITH GenreAvgRatings AS (\n    SELECT b.genre, AVG(br.rating) AS avg_rating\n    FROM books b\n    JOIN book_reviews br ON b.book_id = br.book_id\n    GROUP BY b.genre\n)\nSELECT genre, avg_rating\nFROM GenreAvgRatings\nWHERE CUME_DIST() OVER(ORDER BY avg_rating DESC) > 0.6;\n```\n\n5. **Query: Calculate the CUME_DIST of customer review counts for books**\n```sql\nWITH BookReviewCounts AS (\n    SELECT b.title, COUNT(br.review_id) AS review_count\n    FROM books b\n    LEFT JOIN book_reviews br ON b.book_id = br.book_id\n    GROUP BY b.title\n)\nSELECT title, review_count, CUME_DIST() OVER(ORDER BY review_count DESC) AS cume_dist\nFROM BookReviewCounts;\n```"
+                "content":"# Book(book_id, title, author_id, genre, price)\n# Author(author_id, author_name, country)\n# Customer(customer_id, customer_name, city, state)\n# BookReview(review_id, book_id, customer_id, rating, review_text)\n **Query: Calculate the cumulative distribution of customer ratings for books**\n```sql\\nWITH BookRatings AS (\\n    SELECT b.title, br.rating\\n    FROM books b\\n    JOIN book_reviews br ON b.book_id = br.book_id\\n)\\nSELECT title, rating, CUME_DIST() OVER(ORDER BY rating DESC) AS cume_dist\\nFROM BookRatings;\\n```\\n\\n2. **Query: Identify books with a cumulative distribution rating below 0.4**\\n```sql\\nWITH BookRatings AS (\\n    SELECT b.title, br.rating\\n    FROM books b\\n    JOIN book_reviews br ON b.book_id = br.book_id\\n)\\nSELECT title, rating\\nFROM BookRatings\\nWHERE CUME_DIST() OVER(ORDER BY rating DESC) < 0.4;\\n```\\n\\n3. **Query: Calculate the CUME_DIST of average ratings for books within each genre**\\n```sql\\nWITH GenreAvgRatings AS (\\n    SELECT b.genre, AVG(br.rating) AS avg_rating\\n    FROM books b\\n    JOIN book_reviews br ON b.book_id = br.book_id\\n    GROUP BY b.genre\\n)\\nSELECT genre, avg_rating, CUME_DIST() OVER(ORDER BY avg_rating DESC) AS cume_dist\\nFROM GenreAvgRatings;\\n```\\n\\n4. **Query: Find the genres with a CUME_DIST above 0.6 in terms of average ratings**\\n```sql\\nWITH GenreAvgRatings AS (\\n    SELECT b.genre, AVG(br.rating) AS avg_rating\\n    FROM books b\\n    JOIN book_reviews br ON b.book_id = br.book_id\\n    GROUP BY b.genre\\n)\\nSELECT genre, avg_rating\\nFROM GenreAvgRatings\\nWHERE CUME_DIST() OVER(ORDER BY avg_rating DESC) > 0.6;\\n```\\n\\n5. **Query: Calculate the CUME_DIST of customer review counts for books**\\n```sql\\nWITH BookReviewCounts AS (\\n    SELECT b.title, COUNT(br.review_id) AS review_count\\n    FROM books b\\n    LEFT JOIN book_reviews br ON b.book_id = br.book_id\\n    GROUP BY b.title\\n)\\nSELECT title, review_count, CUME_DIST() OVER(ORDER BY review_count DESC) AS cume_dist\\nFROM BookReviewCounts;\\n```\""            },
+            {
+                "role":"user",
+                "content":prompt
+            }
+        ]
+        return self.generate_chat_completion(messages)
+
+    def format_first_prompt(self, query:str) -> str:
+
+        messages = [
+            {
+                "role":"system",
+                "content":"You are an AI assistant and will aid me to format information. I will give you several tables and a query as input:\n{tables}\n{query}\nI want you to output the following:\n\"I have several tables and I would like to gather some information from them. Please help me write queries to gather this data, here are the table schemas that I have:\"\n{tables}\n\n\"First, I want to\" + {query}"
             },
             {
                 "role":"user",
-                "content":"New example"
+                "content":"**Table: employees**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| employee_id  | Employee's ID               |\n| first_name   | Employee's first name       |\n| last_name    | Employee's last name        |\n| email        | Employee's email address    |\n| phone_number | Employee's phone number     |\n| hire_date    | Employee's hire date        |\n| job_id       | ID of the employee's job    |\n| salary       | Employee's salary           |\n| manager_id   | ID of the employee's manager|\n\n**Table: jobs**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| job_id       | Job's ID                    |\n| job_title    | Job's title                 |\n| min_salary   | Minimum salary for the job   |\n| max_salary   | Maximum salary for the job   |\n\n**Table: departments**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| department_id| Department's ID             |\n| department_name | Department's name        |\n| manager_id   | ID of the department's manager |\n| location_id  | ID of the department's location |\nCalculate the total salary of all employees in the company"
+            },
+            {
+                "role":"assistant",
+                "content":"I have several tables and I would like to gather some information from them. Please help me write queries to gather this data, here are the table schemas that I have:\n**Table: employees**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| employee_id  | Employee's ID               |\n| first_name   | Employee's first name       |\n| last_name    | Employee's last name        |\n| email        | Employee's email address    |\n| phone_number | Employee's phone number     |\n| hire_date    | Employee's hire date        |\n| job_id       | ID of the employee's job    |\n| salary       | Employee's salary           |\n| manager_id   | ID of the employee's manager|\n\n**Table: jobs**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| job_id       | Job's ID                    |\n| job_title    | Job's title                 |\n| min_salary   | Minimum salary for the job   |\n| max_salary   | Maximum salary for the job   |\n\n**Table: departments**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| department_id| Department's ID             |\n| department_name | Department's name        |\n| manager_id   | ID of the department's manager |\n| location_id  | ID of the department's location |\nFirst, I want to calculate the total salary of all employees in the company, write a query for this."
+            },
+            {
+                "role":"user",
+                "content": query
             }
         ]
-        try:
-            response = openai.ChatCompletion.create(
-                engine="gpt-35-turbo",
-                messages=messages,
-                temperature=0,
-                max_tokens=4000,
-                top_p=0.95,
-                frequency_penalty=0,
-                presence_penalty=0,
-                stop=None
-            )
-            print(response['choices'][0]['message']['content'])
-        except openai.error.OpenAIError as e:
-            print(f"Error during API call: {e}")
 
-
-if __name__ == "__main__":
-    explainer = SQLCodeCreation()
-    explainer.request_new_example()
+        return self.generate_chat_completion(messages)

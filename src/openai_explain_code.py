@@ -1,5 +1,3 @@
-# code_explain.py
-
 import openai
 import tkinter as tk
 from tkinter import simpledialog
@@ -7,25 +5,18 @@ from openai_handler import OpenAIApiHandler
 
 class CodeExplain(OpenAIApiHandler):
     def __init__(self):
-        super().__init__()  # Call parent constructor
+        super().__init__()
 
-    def get_multiline_input(self):
-        """Get multiline input using a GUI dialog."""
-        tk.Tk().withdraw()  # Hide main window
-        return simpledialog.askstring("Input", "Please paste your code:")
-
-    def format_user_prompt(self, code_block: str, language: str) -> str:
+    def format_user_prompt(self, code_block: str) -> str:
         """Format user code input for API."""
         lines = code_block.strip().split("\n")
         code_content = lines[1:-1]
         formatted_code = "\\n".join(line.replace("\n", "").replace("\"", "\\\"") for line in code_content)
-        return f"```{language}{formatted_code}\\n```"
+        return f"```{formatted_code}\\n```"
 
-    def request_code_explanation(self):
+    def request_code_explanation(self, code_to_explain: str) -> str:
         """Request code explanation using OpenAI API."""
-        language = input("Define the language:")
-        prompt = self.get_multiline_input()
-        formattedPrompt = self.format_user_prompt(prompt, language.lower())
+        formattedPrompt = self.format_user_prompt(code_to_explain)
 
         messages = [
             {
@@ -38,22 +29,4 @@ class CodeExplain(OpenAIApiHandler):
             }
         ]
 
-        try:
-            response = openai.ChatCompletion.create(
-                engine="gpt-35-turbo",
-                messages=messages,
-                temperature=0,
-                max_tokens=4000,
-                top_p=0.95,
-                frequency_penalty=0,
-                presence_penalty=0,
-                stop=None
-            )
-            print(response['choices'][0]['message']['content'])
-        except openai.error.OpenAIError as e:  # Be specific with the exception
-            print(f"Error during API call: {e}")
-
-
-if __name__ == "__main__":
-    explainer = CodeExplain()
-    explainer.request_code_explanation()
+        return self.generate_chat_completion(messages)

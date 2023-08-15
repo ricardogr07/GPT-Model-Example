@@ -2,7 +2,6 @@ from unittest import mock
 import os
 import openai
 
-
 import unittest
 
 class TestConfigureOpenai(unittest.TestCase):

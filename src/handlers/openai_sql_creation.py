@@ -73,20 +73,20 @@ class SQLCodeCreation(OpenAIApiHandler):
         messages = [
             {
                 "role":"system",
-                "content":"You are an AI assistant and will aid me to format information. I will give you several tables and a query as input:\n{tables}\n{query}\nI want you to output the following:\n\"I have several tables and I would like to gather some information from them. Please help me write queries to gather this data, here are the table schemas that I have:\"\n{tables}\n\n\"First, I want to\" + {query}"
+                "content":"You are an AI assistant and will aid me to format information. I will give you several tables and a query as input:\n{tables}\n{query}\nI want you to output the following:\n\"I have several tables and I would like to gather some information about them. Please help me write queries to gather this data, here are the table schemas that I have:\n{tables}\n\n\"First, I want to\\\" + {query}\""
             },
             {
                 "role":"user",
-                "content":"**Table: employees**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| employee_id  | Employee's ID               |\n| first_name   | Employee's first name       |\n| last_name    | Employee's last name        |\n| email        | Employee's email address    |\n| phone_number | Employee's phone number     |\n| hire_date    | Employee's hire date        |\n| job_id       | ID of the employee's job    |\n| salary       | Employee's salary           |\n| manager_id   | ID of the employee's manager|\n\n**Table: jobs**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| job_id       | Job's ID                    |\n| job_title    | Job's title                 |\n| min_salary   | Minimum salary for the job   |\n| max_salary   | Maximum salary for the job   |\n\n**Table: departments**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| department_id| Department's ID             |\n| department_name | Department's name        |\n| manager_id   | ID of the department's manager |\n| location_id  | ID of the department's location |\nCalculate the total salary of all employees in the company"
+                "content":"Sure, here's an example using three tables:\n\n# Employee (employee_id, name, department_id, salary)\n# Department (department_id, name, location_id)\n# Location (location_id, city, state)\nCalculate the average salary for each department"
             },
             {
                 "role":"assistant",
-                "content":"I have several tables and I would like to gather some information from them. Please help me write queries to gather this data, here are the table schemas that I have:\n**Table: employees**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| employee_id  | Employee's ID               |\n| first_name   | Employee's first name       |\n| last_name    | Employee's last name        |\n| email        | Employee's email address    |\n| phone_number | Employee's phone number     |\n| hire_date    | Employee's hire date        |\n| job_id       | ID of the employee's job    |\n| salary       | Employee's salary           |\n| manager_id   | ID of the employee's manager|\n\n**Table: jobs**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| job_id       | Job's ID                    |\n| job_title    | Job's title                 |\n| min_salary   | Minimum salary for the job   |\n| max_salary   | Maximum salary for the job   |\n\n**Table: departments**\n| Column       | Description                 |\n|--------------|-----------------------------|\n| department_id| Department's ID             |\n| department_name | Department's name        |\n| manager_id   | ID of the department's manager |\n| location_id  | ID of the department's location |\nFirst, I want to calculate the total salary of all employees in the company, write a query for this."
+                "content":"I have several tables and I would like to gather some information about them. Please help me write queries to gather this data, here are the table schemas that I have:\n# Employee (employee_id, name, department_id, salary)\n# Department (department_id, name, location_id)\n# Location (location_id, city, state)\n\nFirst, I want to calculate the average salary for each department, please create a query for this."
             },
             {
                 "role":"user",
-                "content": query
+                "content":query
             }
-        ]
+            ]
 
         return self.generate_chat_completion(messages)

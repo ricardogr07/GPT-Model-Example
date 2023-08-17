@@ -1,11 +1,25 @@
 from handlers.openai_handler import OpenAIApiHandler
 
 class CodeExplain(OpenAIApiHandler):
+    """
+    A class that provides methods to format user code input and request code explanations using the OpenAI API.
+
+    Attributes:
+        None
+    """
     def __init__(self):
         super().__init__()
 
     def format_user_prompt(self, code_block: str) -> str:
-        """Format user code input for API."""
+        """
+        Format the user code input for the API.
+
+        Args:
+            code_block (str): The code block to be formatted.
+
+        Returns:
+            str: The formatted code block.
+        """
         lines = code_block.strip().split("\n")
         code_content = lines[1:-1]
         formatted_code = "\\n".join(line.replace("\n", "").replace("\"", "\\\"") for line in code_content)

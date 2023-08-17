@@ -10,6 +10,32 @@ class SQLCodeCreation(OpenAIApiHandler):
         super().__init__()
         self.additionalComments = additionalComments
 
+    def format_sql_answer(input_text: str) -> str:
+        """
+        Formats the input text containing SQL, introduction, explanation, and summary in a specific way.
+        
+        :param input_text: The input text with SQL and its description
+        :return: The formatted text
+        """
+        
+        # Find the SQL query enclosed in triple backticks
+        sql_match = re.search(r'```(?:SQL|sql)?\s*(.*?)\s*```', input_text, re.DOTALL)
+        sql_query = sql_match.group(1).strip()
+        
+        # Reformat SQL with 'sql' after the triple backticks
+        formatted_sql = f"```sql\n{sql_query}\n```"
+        
+        # Remove the original SQL part (including backticks) from the input
+        clean_text = re.sub(r'```(?:SQL|sql)?\s*.*?\s*```', '', input_text, flags=re.DOTALL).strip()
+        
+        # Replace 'Summary:' with an empty string, if present
+        clean_text = re.sub(r'Summary:', '', clean_text, flags=re.IGNORECASE).strip()
+        
+        # Concatenate all the parts together without a newline character between the intro text and the triple backticks
+        result = f"{clean_text} {formatted_sql}"
+        
+        return result
+
     def extract_query_components(self,input_text: str):
         # Regular expression pattern to match the query description
         query_desc_pattern = re.compile(r'\d+\.\s*\*\*Query:\s*(.*?)\s*\*\*', re.MULTILINE)

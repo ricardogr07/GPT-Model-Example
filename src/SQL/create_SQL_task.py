@@ -12,7 +12,8 @@ class TaskCreator:
 
     def process_queries(self, query):
         natural_language_query, answer_query = self.sql_code_creator.extract_query_components(query)
-        answer = self.code_explanations.request_code_explanation(answer_query)
+        unformatted_answer = self.code_explanations.request_code_explanation(answer_query)    
+        answer = self.sql_code_creator.format_sql_answer(unformatted_answer)
         return natural_language_query, answer
     
     def run(self, task_id):

@@ -1,4 +1,3 @@
-import re
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
 
 class PythonCodeCreation(AIHandler):
@@ -34,8 +33,6 @@ class PythonCodeCreation(AIHandler):
         return prompts_and_answers[0], prompts_and_answers[1], prompts_and_answers[2], prompts_and_answers[3], prompts_and_answers[4]
 
     def request_new_example(self) -> str:
-        """Request code example for sql using OpenAI API."""
-        prompt = "New example"
         messages = [
             {
                 "role":"system",
@@ -43,7 +40,7 @@ class PythonCodeCreation(AIHandler):
             },
             {
                 "role":"user",
-                "content":prompt
+                "content":"New example"
             }
         ]
         return self.generate_chat_completion(messages)

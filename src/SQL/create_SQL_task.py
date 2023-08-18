@@ -12,8 +12,7 @@ class TaskCreator:
 
     def process_queries(self, query):
         natural_language_query, answer_query = self.sql_code_creator.extract_query_components(query)
-        unformatted_answer = self.code_explanations.request_code_explanation(answer_query)    
-        answer = self.sql_code_creator.format_sql_answer(unformatted_answer)
+        answer = self.code_explanations.request_code_explanation(answer_query)    
         return natural_language_query, answer
     
     def run(self, task_id):
@@ -60,7 +59,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate SQL Task')
     parser.add_argument('taskID', type=str, help='Task ID for this run')
     parser.add_argument('specifications', type=str, nargs='?', default='', help='Any specifics about the task')
-    args = parser.parse_args()
-    
+    args = parser.parse_args()  
     handler = TaskCreator(args.specifications)
     handler.run(args.taskID)

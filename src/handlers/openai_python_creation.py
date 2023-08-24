@@ -1,21 +1,9 @@
-import os
-import random
-import json
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
 
 class PythonCodeCreation(AIHandler):
     def __init__(self):
         super().__init__()
-        self.topics = self._load_topics()
 
-    def _load_topics(self):
-        script_dir = os.path.dirname(__file__)
-        json_file_path = os.path.join(script_dir,'topics.json')
-        with open(json_file_path, 'r') as json_file:
-            data = json.load(json_file)
-        topics = data['topics']
-        return topics
-    
     def separate_prompt_and_answer(self,text):
         # Split the section into prompt and answer using '\nAnswer ' as a delimiter
         prompt, answer = text.split('\nAnswer ')
@@ -44,15 +32,7 @@ class PythonCodeCreation(AIHandler):
         # Return the list of strings, each containing a prompt and an associated answer
         return prompts_and_answers[0], prompts_and_answers[1], prompts_and_answers[2], prompts_and_answers[3], prompts_and_answers[4]
 
-    def random_topic_selector(self, list):     
-        random_topic = random.choice(list)
-        return random_topic
-    
     def request_new_example(self) -> str:
-        """Request code example for Python using OpenAI API."""
-        topic = self.random_topic_selector(self.topics)
-        prompt = f"New example. Make sure to {topic} in this example."
-        print(prompt)
         messages = [
             {
                 "role":"system",
@@ -60,7 +40,7 @@ class PythonCodeCreation(AIHandler):
             },
             {
                 "role":"user",
-                "content":prompt
+                "content":"New example"
             }
         ]
         return self.generate_chat_completion(messages)

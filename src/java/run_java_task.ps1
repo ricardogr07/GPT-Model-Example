@@ -11,4 +11,4 @@ $env:PYTHONPATH="C:\Users\ricar\Documents\GitHub\GPT-Model-Example\src"
 # Run the Python script
 python create_java_task.py $taskID
 
-#Can be called as Run-PythonTask "{taskID}"
+#Can be called as Run-JavaTask "{taskID}"

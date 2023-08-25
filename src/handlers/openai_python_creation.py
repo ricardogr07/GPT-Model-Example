@@ -14,7 +14,7 @@ class PythonCodeCreation(AIHandler):
         answer = ':'.join(answer.split(':')[1:]).strip()
         return prompt, answer
 
-    def extract_prompts_and_answers(self,text:str):
+    def extract_prompts_and_answers(self,text:str)-> list:
         # Split the input text into separate sections
         sections = text.split("Input:\nNext\nOutput:\n")  
         # Initialize an empty list to store the extracted prompts and answers
@@ -30,7 +30,7 @@ class PythonCodeCreation(AIHandler):
             # Append the combined string to the list of prompts and answers
             prompts_and_answers.append(combined) 
         # Return the list of strings, each containing a prompt and an associated answer
-        return prompts_and_answers[0], prompts_and_answers[1], prompts_and_answers[2], prompts_and_answers[3], prompts_and_answers[4]
+        return prompts_and_answers
 
     def request_new_example(self) -> str:
         messages = [

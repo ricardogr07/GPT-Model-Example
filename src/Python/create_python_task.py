@@ -50,6 +50,6 @@ class PythonTaskCreator(TaskCreator):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate Python Task')
     parser.add_argument('taskID', type=str, help='Task ID for this run')
-    args = parser.parse_args()  
+    args = parser.parse_args() 
     handler = PythonTaskCreator()
     handler.process_task(args.taskID)

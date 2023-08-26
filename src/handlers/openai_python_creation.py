@@ -1,9 +1,21 @@
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
 import re
+import json
+import random
+import os
 
 class PythonCodeCreation(AIHandler):
     def __init__(self):
         super().__init__()
+        self.topics = self._load_topics()
+
+    def _load_topics(self) -> list:
+        script_dir = os.path.dirname(__file__)
+        json_file_path = os.path.join(script_dir,'topics.json')
+        with open(json_file_path, 'r') as json_file:
+            data = json.load(json_file)
+        topics = data['topics']
+        return topics
 
     def separate_prompt_and_answer(self, text):
         # Split the section into prompt and answer using '\nAnswer ' as a delimiter
@@ -31,6 +43,9 @@ class PythonCodeCreation(AIHandler):
         return combined_prompts_and_answers
 
     def request_new_example(self) -> str:
+        topic = random.choice(self.topics)
+        prompt = f"Create a new example about {topic}."
+        print(prompt)
         messages = [
             {
                 "role": "system",
@@ -38,7 +53,7 @@ class PythonCodeCreation(AIHandler):
             },
             {
                 "role": "user",
-                "content": "New example"
+                "content": "Create a new example about a digital library."
             },
             {
                 "role": "assistant",
@@ -46,7 +61,7 @@ class PythonCodeCreation(AIHandler):
             },
             {
                 "role": "user",
-                "content": "New example"
+                "content": prompt
             }
         ]
-        return self.generate_chat_completion(messages)
+        return self.generate_chat_completion(messages, 0.25)

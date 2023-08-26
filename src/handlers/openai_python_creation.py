@@ -6,16 +6,7 @@ import os
 
 class PythonCodeCreation(AIHandler):
     def __init__(self):
-        super().__init__()
-        self.topics = self._load_topics()
-
-    def _load_topics(self) -> list:
-        script_dir = os.path.dirname(__file__)
-        json_file_path = os.path.join(script_dir,'topics.json')
-        with open(json_file_path, 'r') as json_file:
-            data = json.load(json_file)
-        topics = data['topics']
-        return topics
+        super().__init__()     
 
     def separate_prompt_and_answer(self, text):
         # Split the section into prompt and answer using '\nAnswer ' as a delimiter

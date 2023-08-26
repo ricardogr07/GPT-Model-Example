@@ -10,7 +10,7 @@ class TaskCreator:
         self.sql_code_creator = SQLCodeCreation(self.specifications)
         self.code_explanations = CodeExplain()
 
-    def process_queries(self, query):
+    def process_prompt(self, query):
         natural_language_query, answer_query = self.sql_code_creator.extract_query_components(query)
         answer = self.code_explanations.request_code_explanation(answer_query)    
         return natural_language_query, answer
@@ -36,7 +36,7 @@ class TaskCreator:
             for i, query in enumerate(queries, 1):
                 if i == 1:
                     # Special handling for the first query
-                    prompt, answer = self.process_queries(query)
+                    prompt, answer = self.process_prompt(query)
                     tables_and_first_query = tables_section + "\n" + prompt
                     firstPrompt = self.sql_code_creator.format_first_prompt(tables_and_first_query)                    
                     file.write(f"\n\nPrompt {i}:\n")
@@ -45,7 +45,7 @@ class TaskCreator:
                     file.write(answer)
                 else:
                     # Handling for the rest of the queries
-                    prompt, answer = self.process_queries(query)
+                    prompt, answer = self.process_prompt(query)
                     file.write(f"\n\nPrompt {i}:\n")
                     file.write(prompt)
                     file.write(f"\n\nAnswer {i}:\n")

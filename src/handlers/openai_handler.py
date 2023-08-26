@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 class OpenAIApiHandler:
     def __init__(self):
-        self.configure_openai()
+        self._configure_openai()
         self._configure_logging()
 
-    def configure_openai(self):
+    def _configure_openai(self):
         """Set up OpenAI configurations."""
         load_dotenv()
         self.OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
@@ -26,7 +26,7 @@ class OpenAIApiHandler:
             """Configure logging settings."""
             logging.basicConfig(level=logging.ERROR, format='%(asctime)s [%(levelname)s]: %(message)s')
 
-    def generate_chat_completion(self, messages: list) -> str:
+    def generate_chat_completion(self, messages: list, temp: float = 0) -> str:
         """
         Generate chat completion using OpenAI API.
 
@@ -37,7 +37,7 @@ class OpenAIApiHandler:
             response = openai.ChatCompletion.create(
                 engine="gpt-35-turbo",
                 messages=messages,
-                temperature=0,
+                temperature=temp,
                 max_tokens=4000,
                 top_p=0.95,
                 frequency_penalty=0,

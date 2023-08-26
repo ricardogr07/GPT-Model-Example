@@ -43,4 +43,4 @@ class JavaCodeCreation(AIHandler):
                 "content": "New example"
             }
         ]
-        return self.generate_chat_completion(messages)
+        return super().generate_chat_completion(messages, 0.25)

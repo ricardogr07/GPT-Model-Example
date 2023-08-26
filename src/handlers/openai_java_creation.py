@@ -1,4 +1,5 @@
 import re
+import random
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
 
 
@@ -25,6 +26,9 @@ class JavaCodeCreation(AIHandler):
         
         return paired_prompts_and_answers
     def request_new_example(self) -> str:
+        topic = random.choice(self.topics)
+        prompt = f"Create a new example about {topic}."
+        print(prompt)
         messages = [
             {
                 "role": "system",
@@ -32,7 +36,7 @@ class JavaCodeCreation(AIHandler):
             },
             {
                 "role": "user",
-                "content": "New Example"
+                "content": "Create a new example about reading and storing files"
             },
             {
                 "role": "assistant",
@@ -40,7 +44,7 @@ class JavaCodeCreation(AIHandler):
             },
             {
                 "role": "user",
-                "content": "New example"
+                "content": prompt
             }
         ]
-        return self.generate_chat_completion(messages)
+        return super().generate_chat_completion(messages, 0.25)

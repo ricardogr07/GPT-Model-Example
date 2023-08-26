@@ -6,7 +6,7 @@ from handlers.openai_python_creation import PythonCodeCreation
 from handlers.create_task import TaskCreator
 import subprocess
 
-logging.basicConfig(filename='error_log.txt', level=logging.ERROR)
+logging.basicConfig(filename='python_error_log.txt', level=logging.ERROR)
 
 class PythonTaskCreator(TaskCreator):
     def __init__(self, code_creator_type=PythonCodeCreation):

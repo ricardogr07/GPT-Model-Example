@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 import openai
 from dotenv import load_dotenv
 
@@ -7,6 +8,7 @@ class OpenAIApiHandler:
     def __init__(self):
         self._configure_openai()
         self._configure_logging()
+        self.topics = self._load_topics()
 
     def _configure_openai(self):
         """Set up OpenAI configurations."""
@@ -25,6 +27,14 @@ class OpenAIApiHandler:
     def _configure_logging(self):
             """Configure logging settings."""
             logging.basicConfig(level=logging.ERROR, format='%(asctime)s [%(levelname)s]: %(message)s')
+
+    def _load_topics(self) -> list:
+        script_dir = os.path.dirname(__file__)
+        json_file_path = os.path.join(script_dir,'topics.json')
+        with open(json_file_path, 'r') as json_file:
+            data = json.load(json_file)
+        topics = data['topics']
+        return topics
 
     def generate_chat_completion(self, messages: list, temp: float = 0) -> str:
         """

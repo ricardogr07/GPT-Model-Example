@@ -1,8 +1,6 @@
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
 import re
-import json
 import random
-import os
 
 class PythonCodeCreation(AIHandler):
     def __init__(self):

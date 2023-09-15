@@ -58,7 +58,7 @@ if __name__ == "__main__":
     try:
         project= Project[args.project]
     except KeyError:
-        print("Invalid project name.")
+        logging.error("Error processing task: Invalid project name.", exc_info=True)
         raise
     handler = PythonTaskCreator()
     handler.process_task(args.taskID, project)

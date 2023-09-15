@@ -3,22 +3,14 @@ import re
 import json
 import os
 from handlers.openai_handler import OpenAIApiHandler as AIHandler
+from handlers.topics_manager import TopicsDataManager as TopicsManager
 
 class SQLCodeCreation(AIHandler):
     def __init__(self, additionalComments: str):
         super().__init__()
+        self.topicsManager = TopicsManager()
         self.additionalComments = additionalComments
-        self.sql_functions, self.sql_topics = self._load_sql_data()
-
-    def _load_sql_data(self):
-        script_dir = os.path.dirname(__file__)
-        json_file_path = os.path.join(script_dir,'sql_choices.json')
-        with open(json_file_path, 'r') as json_file:
-            data = json.load(json_file)
-        functions = data['sql_functions']
-        topics = data['sql_topics']
-        return functions, topics
-    
+   
     def extract_query_components(self,input_text: str):
         # Regular expression pattern to match the query description
         query_desc_pattern = re.compile(r'\d+\.\s*\*\*Query:\s*(.*?)\s*\*\*', re.MULTILINE)
@@ -51,18 +43,14 @@ class SQLCodeCreation(AIHandler):
         
         return tables_section, cleaned_queries[0], cleaned_queries[1], cleaned_queries[2], cleaned_queries[3], cleaned_queries[4]
 
-    def random_sql(self, list):     
-        random_topic = random.choice(list)
-        return random_topic
-
     def request_new_example(self) -> str:
         """Request code example for sql using OpenAI API."""
         numberTables = random.randint(3,5)
-        topic = self.random_sql(self.sql_topics)
-        random_function = self.random_sql(self.sql_functions)
+        topic = self.topicsManager.random_sql('sql_topics')
+        random_function = self.topicsManager.random_sql('sql_functions')
         prompt = f"Create a new example with a different topic. Make sure to use a different topic such as {topic}. Use {numberTables} tables now. Create 5 queries based on these tables. Make sure to add CTEs into each query example."
         if self.additionalComments:
-            prompt += f"Use {self.additionalComments} to each query example."
+            prompt += f"Use {self.additionalComments} in each query example."
         else:
             prompt += f"Use {random_function} in each query example."
         print(prompt)

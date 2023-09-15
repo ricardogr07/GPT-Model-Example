@@ -1,103 +1,682 @@
 {
     "sql_functions": [
-        "ROW_NUMBER()",
-        "RANK()",
-        "DENSE_RANK()",
-        "NTILE()",
-        "LAG()",
-        "LEAD()",
-        "FIRST_VALUE()",
-        "LAST_VALUE()",
-        "SUBSTRING()",
-        "CONCAT()",
-        "LENGTH()",
-        "TRIM()",
-        "UPPER()",
-        "LOWER()",
-        "REPLACE()",
-        "CHARINDEX()",
-        "INSTR()",
-        "DATEADD()",
-        "DATEDIFF()",
-        "DATEPART()",
-        "GETDATE()",
-        "EXTRACT()",
-        "TO_CHAR()",
-        "TO_DATE()",
-        "ROUND()",
-        "CEIL()",
-        "FLOOR()",
-        "ABS()",
-        "POWER()",
-        "SQRT()",
-        "MOD()",
-        "EXP()",
-        "LOG()",
-        "SUM()",
-        "AVG()",
-        "MIN()",
-        "MAX()",
-        "COUNT()",
-        "GROUP_CONCAT()",
-        "STRING_AGG()",
-        "CASE",
-        "COALESCE()",
-        "NULLIF()",
-        "IIF()",
-        "CAST()",
-        "CONVERT()",
-        "TO_NUMBER()",
-        "TO_CHAR()",
-        "TO_DATE()",
-        "JSON_VALUE()",
-        "JSON_QUERY()",
-        "JSON_ARRAYAGG()",
-        "JSON_OBJECTAGG()",
-        "JSON_TABLE()",
-        "CROSS APPLY",
-        "OUTER APPLY",
-        "PIVOT",
-        "UNPIVOT",
-        "PERCENT_RANK()",
-        "CUME_DIST()",
-        "PERCENTILE_CONT()",
-        "PERCENTILE_DISC()",
-        "MODE()",
-        "ST_DISTANCE()",
-        "ST_INTERSECTS()",
-        "ST_AREA()",
-        "ST_LENGTH()",
-        "CONTAINS()",
-        "FREETEXT()",
-        "WITH",
-        "RECURSIVE",
-        "EXISTS",
-        "NOT EXISTS",
-        "ANY / SOME",
-        "ALL",
-        "ROWS",
-        "TABLE()"
+        {
+            "name": "ROW_NUMBER()",
+            "count": 0
+        },
+        {
+            "name": "RANK()",
+            "count": 0
+        },
+        {
+            "name": "DENSE_RANK()",
+            "count": 0
+        },
+        {
+            "name": "NTILE()",
+            "count": 0
+        },
+        {
+            "name": "LAG()",
+            "count": 0
+        },
+        {
+            "name": "LEAD()",
+            "count": 0
+        },
+        {
+            "name": "FIRST_VALUE()",
+            "count": 0
+        },
+        {
+            "name": "LAST_VALUE()",
+            "count": 0
+        },
+        {
+            "name": "SUBSTRING()",
+            "count": 0
+        },
+        {
+            "name": "CONCAT()",
+            "count": 0
+        },
+        {
+            "name": "LENGTH()",
+            "count": 0
+        },
+        {
+            "name": "TRIM()",
+            "count": 0
+        },
+        {
+            "name": "UPPER()",
+            "count": 0
+        },
+        {
+            "name": "LOWER()",
+            "count": 0
+        },
+        {
+            "name": "REPLACE()",
+            "count": 0
+        },
+        {
+            "name": "CHARINDEX()",
+            "count": 0
+        },
+        {
+            "name": "INSTR()",
+            "count": 0
+        },
+        {
+            "name": "DATEADD()",
+            "count": 0
+        },
+        {
+            "name": "DATEDIFF()",
+            "count": 0
+        },
+        {
+            "name": "DATEPART()",
+            "count": 0
+        },
+        {
+            "name": "GETDATE()",
+            "count": 0
+        },
+        {
+            "name": "EXTRACT()",
+            "count": 0
+        },
+        {
+            "name": "TO_CHAR()",
+            "count": 0
+        },
+        {
+            "name": "TO_DATE()",
+            "count": 0
+        },
+        {
+            "name": "ROUND()",
+            "count": 0
+        },
+        {
+            "name": "CEIL()",
+            "count": 0
+        },
+        {
+            "name": "FLOOR()",
+            "count": 0
+        },
+        {
+            "name": "ABS()",
+            "count": 1
+        },
+        {
+            "name": "POWER()",
+            "count": 0
+        },
+        {
+            "name": "SQRT()",
+            "count": 0
+        },
+        {
+            "name": "MOD()",
+            "count": 0
+        },
+        {
+            "name": "EXP()",
+            "count": 0
+        },
+        {
+            "name": "LOG()",
+            "count": 0
+        },
+        {
+            "name": "SUM()",
+            "count": 0
+        },
+        {
+            "name": "AVG()",
+            "count": 0
+        },
+        {
+            "name": "MIN()",
+            "count": 0
+        },
+        {
+            "name": "MAX()",
+            "count": 0
+        },
+        {
+            "name": "COUNT()",
+            "count": 0
+        },
+        {
+            "name": "GROUP_CONCAT()",
+            "count": 0
+        },
+        {
+            "name": "STRING_AGG()",
+            "count": 0
+        },
+        {
+            "name": "CASE",
+            "count": 0
+        },
+        {
+            "name": "COALESCE()",
+            "count": 0
+        },
+        {
+            "name": "NULLIF()",
+            "count": 0
+        },
+        {
+            "name": "IIF()",
+            "count": 0
+        },
+        {
+            "name": "CAST()",
+            "count": 0
+        },
+        {
+            "name": "CONVERT()",
+            "count": 0
+        },
+        {
+            "name": "TO_NUMBER()",
+            "count": 0
+        },
+        {
+            "name": "TO_CHAR()",
+            "count": 0
+        },
+        {
+            "name": "TO_DATE()",
+            "count": 0
+        },
+        {
+            "name": "JSON_VALUE()",
+            "count": 0
+        },
+        {
+            "name": "JSON_QUERY()",
+            "count": 0
+        },
+        {
+            "name": "JSON_ARRAYAGG()",
+            "count": 0
+        },
+        {
+            "name": "JSON_OBJECTAGG()",
+            "count": 0
+        },
+        {
+            "name": "JSON_TABLE()",
+            "count": 0
+        },
+        {
+            "name": "CROSS APPLY",
+            "count": 0
+        },
+        {
+            "name": "OUTER APPLY",
+            "count": 0
+        },
+        {
+            "name": "PIVOT",
+            "count": 0
+        },
+        {
+            "name": "UNPIVOT",
+            "count": 0
+        },
+        {
+            "name": "PERCENT_RANK()",
+            "count": 0
+        },
+        {
+            "name": "CUME_DIST()",
+            "count": 0
+        },
+        {
+            "name": "PERCENTILE_CONT()",
+            "count": 0
+        },
+        {
+            "name": "PERCENTILE_DISC()",
+            "count": 0
+        },
+        {
+            "name": "MODE()",
+            "count": 0
+        },
+        {
+            "name": "ST_DISTANCE()",
+            "count": 0
+        },
+        {
+            "name": "ST_INTERSECTS()",
+            "count": 0
+        },
+        {
+            "name": "ST_AREA()",
+            "count": 0
+        },
+        {
+            "name": "ST_LENGTH()",
+            "count": 0
+        },
+        {
+            "name": "CONTAINS()",
+            "count": 0
+        },
+        {
+            "name": "FREETEXT()",
+            "count": 0
+        },
+        {
+            "name": "WITH",
+            "count": 0
+        },
+        {
+            "name": "RECURSIVE",
+            "count": 0
+        },
+        {
+            "name": "EXISTS",
+            "count": 0
+        },
+        {
+            "name": "NOT EXISTS",
+            "count": 0
+        },
+        {
+            "name": "ANY / SOME",
+            "count": 0
+        },
+        {
+            "name": "ALL",
+            "count": 0
+        },
+        {
+            "name": "ROWS",
+            "count": 0
+        },
+        {
+            "name": "TABLE()",
+            "count": 0
+        }
     ],
     "sql_topics": [
-        "E-commerce",
-        "Healthcare",
-        "Financial Services",
-        "Human Resources",
-        "Inventory Management",
-        "Customer Relationship Management (CRM)",
-        "Education",
-        "Content Management System (CMS)",
-        "Supply Chain Management",
-        "IoT Data Storage",
-        "Social Media",
-        "Gaming",
-        "Telecommunications",
-        "Energy Management",
-        "Research Data",
-        "Real Estate",
-        "Travel and Hospitality",
-        "Government Services",
-        "Logistics",
-        "Agriculture"
+        {
+            "name": "Aerospace",
+            "count": 0
+        },
+        {
+            "name": "Agriculture",
+            "count": 0
+        },
+        {
+            "name": "Automotive",
+            "count": 0
+        },
+        {
+            "name": "Banking",
+            "count": 0
+        },
+        {
+            "name": "Biotechnology",
+            "count": 0
+        },
+        {
+            "name": "Broadcasting",
+            "count": 0
+        },
+        {
+            "name": "Chemical",
+            "count": 0
+        },
+        {
+            "name": "Construction",
+            "count": 0
+        },
+        {
+            "name": "Consumer Goods",
+            "count": 0
+        },
+        {
+            "name": "Defense",
+            "count": 0
+        },
+        {
+            "name": "E-commerce",
+            "count": 0
+        },
+        {
+            "name": "Education",
+            "count": 0
+        },
+        {
+            "name": "Electronics",
+            "count": 0
+        },
+        {
+            "name": "Energy",
+            "count": 0
+        },
+        {
+            "name": "Entertainment",
+            "count": 0
+        },
+        {
+            "name": "Environment",
+            "count": 0
+        },
+        {
+            "name": "Fashion",
+            "count": 0
+        },
+        {
+            "name": "Finance",
+            "count": 0
+        },
+        {
+            "name": "Food & Beverage",
+            "count": 0
+        },
+        {
+            "name": "Gaming",
+            "count": 0
+        },
+        {
+            "name": "Government",
+            "count": 0
+        },
+        {
+            "name": "Healthcare",
+            "count": 0
+        },
+        {
+            "name": "Hospitality",
+            "count": 0
+        },
+        {
+            "name": "Insurance",
+            "count": 0
+        },
+        {
+            "name": "Internet",
+            "count": 0
+        },
+        {
+            "name": "Investment",
+            "count": 0
+        },
+        {
+            "name": "Journalism",
+            "count": 0
+        },
+        {
+            "name": "Legal Services",
+            "count": 0
+        },
+        {
+            "name": "Logistics",
+            "count": 0
+        },
+        {
+            "name": "Manufacturing",
+            "count": 0
+        },
+        {
+            "name": "Marketing",
+            "count": 0
+        },
+        {
+            "name": "Media",
+            "count": 0
+        },
+        {
+            "name": "Medical Devices",
+            "count": 0
+        },
+        {
+            "name": "Mining",
+            "count": 0
+        },
+        {
+            "name": "Music",
+            "count": 0
+        },
+        {
+            "name": "Non-profit",
+            "count": 0
+        },
+        {
+            "name": "Oil & Gas",
+            "count": 1
+        },
+        {
+            "name": "Pharmaceuticals",
+            "count": 0
+        },
+        {
+            "name": "Real Estate",
+            "count": 0
+        },
+        {
+            "name": "Renewable Energy",
+            "count": 0
+        },
+        {
+            "name": "Retail",
+            "count": 0
+        },
+        {
+            "name": "Robotics",
+            "count": 0
+        },
+        {
+            "name": "Shipping",
+            "count": 0
+        },
+        {
+            "name": "Social Media",
+            "count": 0
+        },
+        {
+            "name": "Software",
+            "count": 0
+        },
+        {
+            "name": "Sports",
+            "count": 0
+        },
+        {
+            "name": "Telecommunications",
+            "count": 0
+        },
+        {
+            "name": "Tourism",
+            "count": 0
+        },
+        {
+            "name": "Transportation",
+            "count": 0
+        },
+        {
+            "name": "Utilities",
+            "count": 0
+        },
+        {
+            "name": "Venture Capital",
+            "count": 0
+        },
+        {
+            "name": "Veterinary",
+            "count": 0
+        },
+        {
+            "name": "Virtual Reality",
+            "count": 0
+        },
+        {
+            "name": "Wholesale",
+            "count": 0
+        },
+        {
+            "name": "3D Printing",
+            "count": 0
+        },
+        {
+            "name": "Advertising",
+            "count": 0
+        },
+        {
+            "name": "Animation",
+            "count": 0
+        },
+        {
+            "name": "Artificial Intelligence",
+            "count": 0
+        },
+        {
+            "name": "Blockchain",
+            "count": 0
+        },
+        {
+            "name": "Cloud Computing",
+            "count": 0
+        },
+        {
+            "name": "Cybersecurity",
+            "count": 0
+        },
+        {
+            "name": "Data Analysis",
+            "count": 0
+        },
+        {
+            "name": "Digital Marketing",
+            "count": 0
+        },
+        {
+            "name": "E-learning",
+            "count": 0
+        },
+        {
+            "name": "E-sports",
+            "count": 0
+        },
+        {
+            "name": "Fitness",
+            "count": 0
+        },
+        {
+            "name": "Graphic Design",
+            "count": 0
+        },
+        {
+            "name": "Human Resources",
+            "count": 0
+        },
+        {
+            "name": "Information Technology",
+            "count": 0
+        },
+        {
+            "name": "IoT",
+            "count": 0
+        },
+        {
+            "name": "Machinery",
+            "count": 0
+        },
+        {
+            "name": "Mobile Apps",
+            "count": 0
+        },
+        {
+            "name": "Nanotechnology",
+            "count": 0
+        },
+        {
+            "name": "Online Shopping",
+            "count": 0
+        },
+        {
+            "name": "Photography",
+            "count": 0
+        },
+        {
+            "name": "Public Relations",
+            "count": 0
+        },
+        {
+            "name": "Publishing",
+            "count": 0
+        },
+        {
+            "name": "Real-time Analytics",
+            "count": 0
+        },
+        {
+            "name": "Research",
+            "count": 0
+        },
+        {
+            "name": "SaaS",
+            "count": 0
+        },
+        {
+            "name": "Semiconductors",
+            "count": 0
+        },
+        {
+            "name": "Smart Cities",
+            "count": 0
+        },
+        {
+            "name": "Solar Energy",
+            "count": 0
+        },
+        {
+            "name": "Space Exploration",
+            "count": 0
+        },
+        {
+            "name": "Sustainability",
+            "count": 0
+        },
+        {
+            "name": "Travel",
+            "count": 0
+        },
+        {
+            "name": "UI/UX Design",
+            "count": 0
+        },
+        {
+            "name": "Video Production",
+            "count": 0
+        },
+        {
+            "name": "Waste Management",
+            "count": 0
+        },
+        {
+            "name": "Wearable Technology",
+            "count": 0
+        },
+        {
+            "name": "Web Development",
+            "count": 0
+        },
+        {
+            "name": "Wine & Spirits",
+            "count": 0
+        }
     ]
 }

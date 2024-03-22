@@ -42,7 +42,7 @@
         },
         {
             "name": "LENGTH()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "TRIM()",
@@ -90,11 +90,11 @@
         },
         {
             "name": "TO_CHAR()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "TO_DATE()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "ROUND()",
@@ -134,7 +134,7 @@
         },
         {
             "name": "SUM()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "AVG()",
@@ -154,7 +154,7 @@
         },
         {
             "name": "GROUP_CONCAT()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "STRING_AGG()",
@@ -166,7 +166,7 @@
         },
         {
             "name": "COALESCE()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "NULLIF()",
@@ -174,7 +174,7 @@
         },
         {
             "name": "IIF()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "CAST()",
@@ -242,11 +242,11 @@
         },
         {
             "name": "PERCENTILE_CONT()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "PERCENTILE_DISC()",
-            "count": 0
+            "count": 1
         },
         {
             "name": "MODE()",
@@ -312,7 +312,7 @@
     "sql_topics": [
         {
             "name": "Aerospace",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Agriculture",
@@ -384,7 +384,7 @@
         },
         {
             "name": "Food & Beverage",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Gaming",
@@ -436,15 +436,15 @@
         },
         {
             "name": "Media",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Medical Devices",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Mining",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Music",
@@ -472,7 +472,7 @@
         },
         {
             "name": "Retail",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Robotics",
@@ -544,7 +544,7 @@
         },
         {
             "name": "Blockchain",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Cloud Computing",
@@ -572,7 +572,7 @@
         },
         {
             "name": "Fitness",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Graphic Design",
@@ -580,7 +580,7 @@
         },
         {
             "name": "Human Resources",
-            "count": 0
+            "count": 1
         },
         {
             "name": "Information Technology",
